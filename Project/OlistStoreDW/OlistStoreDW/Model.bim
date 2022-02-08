@@ -1,0 +1,1166 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1500,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "SQL/ ;OlistStore",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": ".",
+            "database": "OlistStore"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "ServiceAccount",
+          "EncryptConnection": false
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "dim list-states-brazil-38j",
+        "columns": [
+          {
+            "name": "Sr_No",
+            "dataType": "int64",
+            "sourceColumn": "Sr_No"
+          },
+          {
+            "name": "State",
+            "dataType": "string",
+            "sourceColumn": "State"
+          },
+          {
+            "name": "Abbreviation",
+            "dataType": "string",
+            "sourceColumn": "Abbreviation"
+          },
+          {
+            "name": "Capital",
+            "dataType": "string",
+            "sourceColumn": "Capital"
+          },
+          {
+            "name": "Area_sq_km",
+            "dataType": "double",
+            "sourceColumn": "Area_sq_km"
+          },
+          {
+            "name": "Population_2010",
+            "dataType": "int64",
+            "sourceColumn": "Population_2010"
+          },
+          {
+            "name": "Density_2010",
+            "dataType": "double",
+            "sourceColumn": "Density_2010"
+          },
+          {
+            "name": "GDP_total_2008",
+            "dataType": "string",
+            "sourceColumn": "GDP_total_2008"
+          },
+          {
+            "name": "GDP_per_capita_R_2008",
+            "dataType": "string",
+            "sourceColumn": "GDP_per_capita_R_2008"
+          },
+          {
+            "name": "Literacy_2008",
+            "dataType": "string",
+            "sourceColumn": "Literacy_2008"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    #\"dim_list-states-brazil-38j\" = Source{[Schema=\"dim\",Item=\"list-states-brazil-38j\"]}[Data]",
+                "in",
+                "    #\"dim_list-states-brazil-38j\""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim olist_customers_dataset",
+        "columns": [
+          {
+            "name": "customer_id",
+            "dataType": "string",
+            "sourceColumn": "customer_id"
+          },
+          {
+            "name": "customer_unique_id",
+            "dataType": "string",
+            "sourceColumn": "customer_unique_id"
+          },
+          {
+            "name": "customer_zip_code_prefix",
+            "dataType": "string",
+            "sourceColumn": "customer_zip_code_prefix"
+          },
+          {
+            "name": "customer_city",
+            "dataType": "string",
+            "sourceColumn": "customer_city"
+          },
+          {
+            "name": "customer_state",
+            "dataType": "string",
+            "sourceColumn": "customer_state"
+          },
+          {
+            "type": "calculated",
+            "name": "Rank",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": " calculate([Population Rank], ALL('dim olist_geolocation_dataset'[geolocation_zip_code_prefix]), ALL('dim olist_geolocation_dataset'[geolocation_city]))"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    dim_olist_customers_dataset = Source{[Schema=\"dim\",Item=\"olist_customers_dataset\"]}[Data]",
+                "in",
+                "    dim_olist_customers_dataset"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim olist_geolocation_dataset",
+        "columns": [
+          {
+            "name": "geolocation_zip_code_prefix",
+            "dataType": "string",
+            "sourceColumn": "geolocation_zip_code_prefix"
+          },
+          {
+            "name": "geolocation_lat",
+            "dataType": "double",
+            "sourceColumn": "geolocation_lat"
+          },
+          {
+            "name": "geolocation_lng",
+            "dataType": "double",
+            "sourceColumn": "geolocation_lng"
+          },
+          {
+            "name": "geolocation_city",
+            "dataType": "string",
+            "sourceColumn": "geolocation_city"
+          },
+          {
+            "name": "geolocation_state",
+            "dataType": "string",
+            "sourceColumn": "geolocation_state"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    dim_olist_geolocation_dataset = Source{[Schema=\"dim\",Item=\"olist_geolocation_dataset\"]}[Data]",
+                "in",
+                "    dim_olist_geolocation_dataset"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Population Rank",
+            "expression": "calculate(RANKX(ALLSELECTED('dim olist_geolocation_dataset'[geolocation_state]),COUNTROWS(RELATEDTABLE('dim olist_customers_dataset')),, DESC))"
+          }
+        ]
+      },
+      {
+        "name": "dim olist_products_dataset",
+        "columns": [
+          {
+            "name": "product_id",
+            "dataType": "string",
+            "sourceColumn": "product_id"
+          },
+          {
+            "name": "product_category_name",
+            "dataType": "string",
+            "sourceColumn": "product_category_name"
+          },
+          {
+            "name": "product_name_lenght",
+            "dataType": "int64",
+            "sourceColumn": "product_name_lenght"
+          },
+          {
+            "name": "product_description_lenght",
+            "dataType": "int64",
+            "sourceColumn": "product_description_lenght"
+          },
+          {
+            "name": "product_photos_qty",
+            "dataType": "string",
+            "sourceColumn": "product_photos_qty"
+          },
+          {
+            "name": "product_weight_g",
+            "dataType": "int64",
+            "sourceColumn": "product_weight_g"
+          },
+          {
+            "name": "product_length_cm",
+            "dataType": "int64",
+            "sourceColumn": "product_length_cm"
+          },
+          {
+            "name": "product_height_cm",
+            "dataType": "int64",
+            "sourceColumn": "product_height_cm"
+          },
+          {
+            "name": "product_width_cm",
+            "dataType": "int64",
+            "sourceColumn": "product_width_cm"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    dim_olist_products_dataset = Source{[Schema=\"dim\",Item=\"olist_products_dataset\"]}[Data]",
+                "in",
+                "    dim_olist_products_dataset"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim olist_sellers_dataset",
+        "columns": [
+          {
+            "name": "seller_id",
+            "dataType": "string",
+            "sourceColumn": "seller_id"
+          },
+          {
+            "name": "seller_zip_code_prefix",
+            "dataType": "string",
+            "sourceColumn": "seller_zip_code_prefix"
+          },
+          {
+            "name": "seller_city",
+            "dataType": "string",
+            "sourceColumn": "seller_city"
+          },
+          {
+            "name": "seller_state",
+            "dataType": "string",
+            "sourceColumn": "seller_state"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    dim_olist_sellers_dataset = Source{[Schema=\"dim\",Item=\"olist_sellers_dataset\"]}[Data]",
+                "in",
+                "    dim_olist_sellers_dataset"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim product_category_name_translation",
+        "columns": [
+          {
+            "name": "product_category_name",
+            "dataType": "string",
+            "sourceColumn": "product_category_name"
+          },
+          {
+            "name": "product_category_name_english",
+            "dataType": "string",
+            "sourceColumn": "product_category_name_english"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    dim_product_category_name_translation = Source{[Schema=\"dim\",Item=\"product_category_name_translation\"]}[Data]",
+                "in",
+                "    dim_product_category_name_translation"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact olist_order_items_dataset",
+        "columns": [
+          {
+            "name": "order_id",
+            "dataType": "string",
+            "sourceColumn": "order_id"
+          },
+          {
+            "name": "order_item_id",
+            "dataType": "int64",
+            "sourceColumn": "order_item_id"
+          },
+          {
+            "name": "product_id",
+            "dataType": "string",
+            "sourceColumn": "product_id"
+          },
+          {
+            "name": "seller_id",
+            "dataType": "string",
+            "sourceColumn": "seller_id"
+          },
+          {
+            "name": "shipping_limit_date",
+            "dataType": "dateTime",
+            "sourceColumn": "shipping_limit_date"
+          },
+          {
+            "name": "price",
+            "dataType": "double",
+            "sourceColumn": "price"
+          },
+          {
+            "name": "freight_value",
+            "dataType": "double",
+            "sourceColumn": "freight_value"
+          },
+          {
+            "type": "calculated",
+            "name": "Out Date",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": "IF(RELATED('fact olist_orders_dataset'[order_delivered_customer_date])>'fact olist_order_items_dataset'[shipping_limit_date], 1, 0)"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    fact_olist_order_items_dataset = Source{[Schema=\"fact\",Item=\"olist_order_items_dataset\"]}[Data]",
+                "in",
+                "    fact_olist_order_items_dataset"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact olist_order_reviews_dataset",
+        "columns": [
+          {
+            "name": "review_id",
+            "dataType": "string",
+            "sourceColumn": "review_id"
+          },
+          {
+            "name": "order_id",
+            "dataType": "string",
+            "sourceColumn": "order_id"
+          },
+          {
+            "name": "review_score",
+            "dataType": "int64",
+            "sourceColumn": "review_score"
+          },
+          {
+            "name": "review_comment_title",
+            "dataType": "string",
+            "sourceColumn": "review_comment_title"
+          },
+          {
+            "name": "review_comment_message",
+            "dataType": "string",
+            "sourceColumn": "review_comment_message"
+          },
+          {
+            "name": "review_creation_date",
+            "dataType": "dateTime",
+            "sourceColumn": "review_creation_date"
+          },
+          {
+            "name": "review_answer_timestamp",
+            "dataType": "dateTime",
+            "sourceColumn": "review_answer_timestamp"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    fact_olist_order_reviews_dataset = Source{[Schema=\"fact\",Item=\"olist_order_reviews_dataset\"]}[Data]",
+                "in",
+                "    fact_olist_order_reviews_dataset"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact olist_orders_dataset",
+        "columns": [
+          {
+            "name": "order_id",
+            "dataType": "string",
+            "sourceColumn": "order_id"
+          },
+          {
+            "name": "customer_id",
+            "dataType": "string",
+            "sourceColumn": "customer_id"
+          },
+          {
+            "name": "order_status",
+            "dataType": "string",
+            "sourceColumn": "order_status"
+          },
+          {
+            "name": "order_purchase_timestamp",
+            "dataType": "dateTime",
+            "sourceColumn": "order_purchase_timestamp"
+          },
+          {
+            "name": "order_approved_at",
+            "dataType": "dateTime",
+            "sourceColumn": "order_approved_at"
+          },
+          {
+            "name": "order_delivered_carrier_date",
+            "dataType": "dateTime",
+            "sourceColumn": "order_delivered_carrier_date"
+          },
+          {
+            "name": "order_delivered_customer_date",
+            "dataType": "dateTime",
+            "sourceColumn": "order_delivered_customer_date"
+          },
+          {
+            "name": "order_estimated_delivery_date",
+            "dataType": "dateTime",
+            "sourceColumn": "order_estimated_delivery_date"
+          },
+          {
+            "type": "calculated",
+            "name": "YearMonth",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " DAY('fact olist_orders_dataset'[order_purchase_timestamp])&\"/\"&MONTH('fact olist_orders_dataset'[order_purchase_timestamp])&\"/\"&YEAR('fact olist_orders_dataset'[order_purchase_timestamp])",
+            "formatString": "MM/dd/yyyy",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"1033\" Group=\"ShortDate\" FormatString=\"MM/dd/yyyy\" /></DateTimes></Format>"
+              }
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Day",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": "DAY('fact olist_orders_dataset'[YearMonth])"
+          },
+          {
+            "type": "calculated",
+            "name": "Quarter",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "ROUNDUP(MONTH('fact olist_orders_dataset'[order_purchase_timestamp])/3, 0)"
+          },
+          {
+            "type": "calculated",
+            "name": "Shippment Duration",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": " DATEDIFF('fact olist_orders_dataset'[order_purchase_timestamp], 'fact olist_orders_dataset'[order_delivered_customer_date], DAY)"
+          },
+          {
+            "type": "calculated",
+            "name": "Total Freight",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "SUMX(RELATEDTABLE('fact olist_order_items_dataset'), 'fact olist_order_items_dataset'[freight_value])"
+          },
+          {
+            "type": "calculated",
+            "name": "Total Price",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "CALCULATE(SUMX(RELATEDTABLE('fact olist_order_items_dataset'), 'fact olist_order_items_dataset'[price]+'fact olist_order_items_dataset'[freight_value]))"
+          },
+          {
+            "type": "calculated",
+            "name": "Year",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": "YEAR('fact olist_orders_dataset'[order_purchase_timestamp])",
+            "formatString": "0"
+          },
+          {
+            "type": "calculated",
+            "name": "Month",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": "MONTH('fact olist_orders_dataset'[order_purchase_timestamp])",
+            "formatString": "0"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "2018 orders",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    fact_olist_orders_dataset = Source{[Schema=\"fact\",Item=\"olist_orders_dataset\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(fact_olist_orders_dataset, each [order_purchase_timestamp] >= #datetime(2018, 1, 1, 0, 0, 0) and [order_purchase_timestamp] <= #datetime(2018, 12, 31, 0, 0, 0))",
+                "in",
+                "    #\"Filtered Rows\""
+              ]
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/ ;OlistStore\",",
+                  "    fact_olist_orders_dataset = Source{[Schema=\"fact\",Item=\"olist_orders_dataset\"]}[Data],",
+                  "    #\"Filtered Rows\" = Table.SelectRows(fact_olist_orders_dataset, each [order_purchase_timestamp] >= #datetime(2018, 1, 1, 0, 0, 0) and [order_purchase_timestamp] <= #datetime(2018, 12, 31, 0, 0, 0))",
+                  "in",
+                  "    #\"Filtered Rows\"</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "2017 orders",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    fact_olist_orders_dataset = Source{[Schema=\"fact\",Item=\"olist_orders_dataset\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(fact_olist_orders_dataset, each [order_purchase_timestamp] >= #datetime(2017, 1, 1, 0, 0, 0) and [order_purchase_timestamp] <= #datetime(2017, 12, 31, 0, 0, 0))",
+                "in",
+                "    #\"Filtered Rows\""
+              ]
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/ ;OlistStore\",",
+                  "    fact_olist_orders_dataset = Source{[Schema=\"fact\",Item=\"olist_orders_dataset\"]}[Data],",
+                  "    #\"Filtered Rows\" = Table.SelectRows(fact_olist_orders_dataset, each [Year]=2017 and [Month]>=1 and [Month]<=12)",
+                  "in",
+                  "    #\"Filtered Rows\"</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "2016 orders",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    fact_olist_orders_dataset = Source{[Schema=\"fact\",Item=\"olist_orders_dataset\"]}[Data],",
+                "    #\"Filtered Rows\" = Table.SelectRows(fact_olist_orders_dataset, each [order_purchase_timestamp] >= #datetime(2016, 1, 1, 0, 0, 0) and [order_purchase_timestamp] <= #datetime(2016, 12, 31, 0, 0, 0))",
+                "in",
+                "    #\"Filtered Rows\""
+              ]
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>let",
+                  "    Source = #\"SQL/ ;OlistStore\",",
+                  "    fact_olist_orders_dataset = Source{[Schema=\"fact\",Item=\"olist_orders_dataset\"]}[Data],",
+                  "    #\"Filtered Rows\" = Table.SelectRows(fact_olist_orders_dataset, each [Year]=2016 and [Month]>=1 and [Month]<=12)",
+                  "in",
+                  "    #\"Filtered Rows\"</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "measures": [
+          {
+            "name": "Average Delivery Time",
+            "expression": " CALCULATE(AVERAGEX('fact olist_orders_dataset', 'fact olist_orders_dataset'[Shippment Duration]))"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "YearMonthH",
+            "levels": [
+              {
+                "name": "YearMonth",
+                "ordinal": 0,
+                "column": "YearMonth"
+              },
+              {
+                "name": "Year",
+                "ordinal": 1,
+                "column": "Year"
+              },
+              {
+                "name": "Quarter",
+                "ordinal": 2,
+                "column": "Quarter"
+              },
+              {
+                "name": "Month",
+                "ordinal": 3,
+                "column": "Month"
+              },
+              {
+                "name": "Day",
+                "ordinal": 4,
+                "column": "Day"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "olist_order_payments_dataset",
+        "columns": [
+          {
+            "name": "order_id",
+            "dataType": "string",
+            "sourceColumn": "order_id"
+          },
+          {
+            "name": "payment_sequential",
+            "dataType": "int64",
+            "sourceColumn": "payment_sequential"
+          },
+          {
+            "name": "payment_type",
+            "dataType": "string",
+            "sourceColumn": "payment_type"
+          },
+          {
+            "name": "payment_installments",
+            "dataType": "int64",
+            "sourceColumn": "payment_installments"
+          },
+          {
+            "name": "payment_value",
+            "dataType": "double",
+            "sourceColumn": "payment_value"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/ ;OlistStore\",",
+                "    dbo_olist_order_payments_dataset = Source{[Schema=\"dbo\",Item=\"olist_order_payments_dataset\"]}[Data]",
+                "in",
+                "    dbo_olist_order_payments_dataset"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Average Installments",
+            "expression": " CALCULATE(AVERAGE(olist_order_payments_dataset[payment_installments]))"
+          },
+          {
+            "name": "Avg Duration",
+            "expression": " IF(ISFILTERED('dim olist_geolocation_dataset'[geolocation_state]),CALCULATE(AVERAGE('fact olist_orders_dataset'[Shippment Duration])),\"N/A\")"
+          },
+          {
+            "name": "Avg Freight Value",
+            "expression": " IF(ISFILTERED('dim olist_geolocation_dataset'[geolocation_state]),CALCULATE(AVERAGE('fact olist_order_items_dataset'[freight_value])),\"N/A\")"
+          },
+          {
+            "name": "Categories' Sales Rank",
+            "expression": " RANKX(ALLSELECTED('dim product_category_name_translation'[product_category_name_english]), [TotalSales],,desc)"
+          },
+          {
+            "name": "TotalSales",
+            "expression": " CALCULATE(SUM('fact olist_orders_dataset'[Total Price]))"
+          },
+          {
+            "name": "Category Revenue Percentage",
+            "expression": " (CALCULATE(SUM('fact olist_order_items_dataset'[price]))/ [Total Revenue])*100"
+          },
+          {
+            "name": "Total Revenue",
+            "expression": " CALCULATE(SUM('fact olist_order_items_dataset'[price]), ALL('dim product_category_name_translation'[product_category_name_english]))"
+          },
+          {
+            "name": "City Average Duration",
+            "expression": " CALCULATE(AVERAGE('fact olist_orders_dataset'[Shippment Duration]))"
+          },
+          {
+            "name": "City Satisfaction",
+            "expression": " CALCULATE(SUM('fact olist_order_reviews_dataset'[review_score]))"
+          },
+          {
+            "name": "City Satisfaction Rank",
+            "expression": " RANKX(ALLSELECTED('dim olist_geolocation_dataset'[geolocation_city]), [City Satisfaction],,desc)"
+          },
+          {
+            "name": "Customers' Density",
+            "expression": " calculate(COUNTROWS(RELATEDTABLE('dim olist_customers_dataset')))"
+          },
+          {
+            "name": "Customer Percentage",
+            "expression": " IF(ISFILTERED('dim olist_geolocation_dataset'[geolocation_state]),[Customers' Density]/[Total Customers],\"N/A\")"
+          },
+          {
+            "name": "Total Customers",
+            "expression": " COUNTROWS(ALL('dim olist_customers_dataset'))"
+          },
+          {
+            "name": "Payment Frequency",
+            "expression": " CALCULATE(COUNTROWS(RELATEDTABLE(olist_order_payments_dataset)))"
+          },
+          {
+            "name": "Payment Type Count",
+            "expression": " CALCULATE(COUNTROWS(olist_order_payments_dataset)/COUNTROWS(ALL(olist_order_payments_dataset))) "
+          },
+          {
+            "name": "Preferred Payment Method",
+            "expression": " FIRSTNONBLANK(TOPN(1,VALUES('dim olist_geolocation_dataset'[geolocation_state]),[Payment Frequency]),1)"
+          },
+          {
+            "name": "Product Frequency",
+            "expression": " CALCULATE(COUNTROWS(RELATEDTABLE('fact olist_order_items_dataset')))"
+          },
+          {
+            "name": "Product Rank",
+            "expression": " RANKX(ALLSELECTED('dim olist_products_dataset'[product_category_name]), [Product Frequency],,DESC)"
+          },
+          {
+            "name": "Products Satisfaction",
+            "expression": " CALCULATE(SUM('fact olist_order_reviews_dataset'[review_score]))"
+          },
+          {
+            "name": "Satisfaction Rank",
+            "expression": " RANKX(ALLSELECTED('dim product_category_name_translation'[product_category_name_english]), [Products Satisfaction],,desc)"
+          },
+          {
+            "name": "Sellers' Distribution",
+            "expression": " CALCULATE(COUNTROWS('dim olist_sellers_dataset'))"
+          },
+          {
+            "name": "States' Installments Rank",
+            "expression": " RANKX(ALLSELECTED('dim olist_geolocation_dataset'[geolocation_city]), [Average Installments],,desc)"
+          },
+          {
+            "name": "States' Sales Rank",
+            "expression": " RANKX(ALLSELECTED('dim olist_geolocation_dataset'[geolocation_city]), [TotalSales],,desc) "
+          },
+          {
+            "name": "TotalOutDate",
+            "expression": " CALCULATE(SUM('fact olist_order_items_dataset'[Out Date]))"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "0792694d-61bd-4fee-bc7d-21119cf3ee90",
+        "fromCardinality": "one",
+        "fromTable": "dim olist_customers_dataset",
+        "fromColumn": "customer_id",
+        "toTable": "fact olist_orders_dataset",
+        "toColumn": "customer_id",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "fda86b45-9b83-4d14-aa39-8ae72eade5ef",
+        "toCardinality": "many",
+        "fromTable": "dim olist_geolocation_dataset",
+        "fromColumn": "geolocation_zip_code_prefix",
+        "toTable": "dim olist_customers_dataset",
+        "toColumn": "customer_zip_code_prefix",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "d2707e1c-bc22-4e70-aee1-d514ab2cb0c6",
+        "fromTable": "fact olist_order_items_dataset",
+        "fromColumn": "product_id",
+        "toTable": "dim olist_products_dataset",
+        "toColumn": "product_id"
+      },
+      {
+        "name": "a15f7c6c-550a-498f-8a87-ff7d17981fff",
+        "fromTable": "fact olist_order_items_dataset",
+        "fromColumn": "order_id",
+        "toTable": "fact olist_orders_dataset",
+        "toColumn": "order_id"
+      },
+      {
+        "name": "05782cf1-bbb9-45e8-aac1-944a7bdf61a1",
+        "fromTable": "olist_order_payments_dataset",
+        "fromColumn": "order_id",
+        "toTable": "fact olist_orders_dataset",
+        "toColumn": "order_id"
+      },
+      {
+        "name": "a60d8fec-ac10-4b0e-a110-d9f3e1cf889a",
+        "fromTable": "fact olist_order_items_dataset",
+        "fromColumn": "seller_id",
+        "toTable": "dim olist_sellers_dataset",
+        "toColumn": "seller_id"
+      },
+      {
+        "name": "64228f4e-2cfb-4180-ae61-d50b6feeb28f",
+        "fromTable": "dim olist_products_dataset",
+        "fromColumn": "product_category_name",
+        "toTable": "dim product_category_name_translation",
+        "toColumn": "product_category_name"
+      },
+      {
+        "name": "635a8d17-94fe-452f-becb-d0c19fc4b726",
+        "fromTable": "fact olist_order_reviews_dataset",
+        "fromColumn": "order_id",
+        "toTable": "fact olist_orders_dataset",
+        "toColumn": "order_id"
+      },
+      {
+        "name": "c688cff0-ac2d-4528-98be-f5e9ed99769d",
+        "fromTable": "dim olist_geolocation_dataset",
+        "fromColumn": "geolocation_state",
+        "toTable": "dim list-states-brazil-38j",
+        "toColumn": "State"
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "Sales",
+        "tables": [
+          {
+            "name": "fact olist_order_items_dataset",
+            "columns": [
+              {
+                "name": "freight_value"
+              },
+              {
+                "name": "order_id"
+              },
+              {
+                "name": "order_item_id"
+              },
+              {
+                "name": "Out Date"
+              },
+              {
+                "name": "price"
+              },
+              {
+                "name": "product_id"
+              },
+              {
+                "name": "seller_id"
+              },
+              {
+                "name": "shipping_limit_date"
+              }
+            ]
+          },
+          {
+            "name": "fact olist_orders_dataset",
+            "columns": [
+              {
+                "name": "customer_id"
+              },
+              {
+                "name": "Day"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "order_approved_at"
+              },
+              {
+                "name": "order_delivered_carrier_date"
+              },
+              {
+                "name": "order_delivered_customer_date"
+              },
+              {
+                "name": "order_estimated_delivery_date"
+              },
+              {
+                "name": "order_id"
+              },
+              {
+                "name": "order_purchase_timestamp"
+              },
+              {
+                "name": "order_status"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "Shippment Duration"
+              },
+              {
+                "name": "Total Freight"
+              },
+              {
+                "name": "Total Price"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "YearMonth"
+              }
+            ],
+            "hierarchies": [
+              {
+                "name": "YearMonthH"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Average Delivery Time"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Products",
+        "tables": [
+          {
+            "name": "dim olist_products_dataset",
+            "columns": [
+              {
+                "name": "product_category_name"
+              },
+              {
+                "name": "product_description_lenght"
+              },
+              {
+                "name": "product_height_cm"
+              },
+              {
+                "name": "product_id"
+              },
+              {
+                "name": "product_length_cm"
+              },
+              {
+                "name": "product_name_lenght"
+              },
+              {
+                "name": "product_photos_qty"
+              },
+              {
+                "name": "product_weight_g"
+              },
+              {
+                "name": "product_width_cm"
+              }
+            ]
+          },
+          {
+            "name": "dim product_category_name_translation",
+            "columns": [
+              {
+                "name": "product_category_name"
+              },
+              {
+                "name": "product_category_name_english"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Customers",
+        "tables": [
+          {
+            "name": "dim olist_customers_dataset",
+            "columns": [
+              {
+                "name": "customer_city"
+              },
+              {
+                "name": "customer_id"
+              },
+              {
+                "name": "customer_state"
+              },
+              {
+                "name": "customer_unique_id"
+              },
+              {
+                "name": "customer_zip_code_prefix"
+              },
+              {
+                "name": "Rank"
+              }
+            ]
+          },
+          {
+            "name": "dim olist_geolocation_dataset",
+            "columns": [
+              {
+                "name": "geolocation_city"
+              },
+              {
+                "name": "geolocation_lat"
+              },
+              {
+                "name": "geolocation_lng"
+              },
+              {
+                "name": "geolocation_state"
+              },
+              {
+                "name": "geolocation_zip_code_prefix"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Population Rank"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "roles": [
+      {
+        "name": "SP state Data",
+        "modelPermission": "read",
+        "tablePermissions": [
+          {
+            "name": "dim olist_customers_dataset",
+            "filterExpression": "[customer_state]=\"SP\""
+          }
+        ]
+      },
+      {
+        "name": "Product Category",
+        "modelPermission": "readRefresh",
+        "tablePermissions": [
+          {
+            "name": "dim product_category_name_translation",
+            "filterExpression": [
+              "[product_category_name_english]=\"sports_leisure\"",
+              ""
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sales",
+        "modelPermission": "read",
+        "tablePermissions": [
+          {
+            "name": "dim list-states-brazil-38j",
+            "filterExpression": "[Population Rank]>5",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "dim olist_products_dataset",
+            "filterExpression": "[Product Rank]>=30"
+          },
+          {
+            "name": "dim olist_customers_dataset",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "dim olist_geolocation_dataset",
+            "metadataPermission": "none"
+          },
+          {
+            "name": "dim olist_sellers_dataset",
+            "metadataPermission": "none"
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "600"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}

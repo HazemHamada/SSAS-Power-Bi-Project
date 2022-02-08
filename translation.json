@@ -1,0 +1,1031 @@
+{
+  "referenceCulture": {
+  "name": "OlistStoreDW_ymahmed_309000ce-5e6d-4a31-a9ab-c1567f0332c7",
+  "model": {
+    "tables": [
+      {
+        "name": "dim list-states-brazil-38j",
+        "columns": [
+          {
+            "name": "Sr_No"
+          },
+          {
+            "name": "State"
+          },
+          {
+            "name": "Abbreviation"
+          },
+          {
+            "name": "Capital"
+          },
+          {
+            "name": "Area_sq_km"
+          },
+          {
+            "name": "Population_2010"
+          },
+          {
+            "name": "Density_2010"
+          },
+          {
+            "name": "GDP_total_2008"
+          },
+          {
+            "name": "GDP_per_capita_R_2008"
+          },
+          {
+            "name": "Literacy_2008"
+          }
+        ]
+      },
+      {
+        "name": "dim olist_customers_dataset",
+        "columns": [
+          {
+            "name": "customer_id"
+          },
+          {
+            "name": "customer_unique_id"
+          },
+          {
+            "name": "customer_zip_code_prefix"
+          },
+          {
+            "name": "customer_city"
+          },
+          {
+            "name": "customer_state"
+          },
+          {
+            "name": "Rank"
+          }
+        ]
+      },
+      {
+        "name": "dim olist_geolocation_dataset",
+        "columns": [
+          {
+            "name": "geolocation_zip_code_prefix"
+          },
+          {
+            "name": "geolocation_lat"
+          },
+          {
+            "name": "geolocation_lng"
+          },
+          {
+            "name": "geolocation_city"
+          },
+          {
+            "name": "geolocation_state"
+          }
+        ],
+        "measures": [
+          {
+            "name": "Population Rank"
+          }
+        ]
+      },
+      {
+        "name": "dim olist_products_dataset",
+        "columns": [
+          {
+            "name": "product_id"
+          },
+          {
+            "name": "product_category_name"
+          },
+          {
+            "name": "product_name_lenght"
+          },
+          {
+            "name": "product_description_lenght"
+          },
+          {
+            "name": "product_photos_qty"
+          },
+          {
+            "name": "product_weight_g"
+          },
+          {
+            "name": "product_length_cm"
+          },
+          {
+            "name": "product_height_cm"
+          },
+          {
+            "name": "product_width_cm"
+          }
+        ]
+      },
+      {
+        "name": "dim olist_sellers_dataset",
+        "columns": [
+          {
+            "name": "seller_id"
+          },
+          {
+            "name": "seller_zip_code_prefix"
+          },
+          {
+            "name": "seller_city"
+          },
+          {
+            "name": "seller_state"
+          }
+        ]
+      },
+      {
+        "name": "dim product_category_name_translation",
+        "columns": [
+          {
+            "name": "product_category_name"
+          },
+          {
+            "name": "product_category_name_english"
+          }
+        ]
+      },
+      {
+        "name": "fact olist_order_items_dataset",
+        "columns": [
+          {
+            "name": "order_id"
+          },
+          {
+            "name": "order_item_id"
+          },
+          {
+            "name": "product_id"
+          },
+          {
+            "name": "seller_id"
+          },
+          {
+            "name": "shipping_limit_date"
+          },
+          {
+            "name": "price"
+          },
+          {
+            "name": "freight_value"
+          },
+          {
+            "name": "Out Date"
+          }
+        ]
+      },
+      {
+        "name": "fact olist_order_reviews_dataset",
+        "columns": [
+          {
+            "name": "review_id"
+          },
+          {
+            "name": "order_id"
+          },
+          {
+            "name": "review_score"
+          },
+          {
+            "name": "review_comment_title"
+          },
+          {
+            "name": "review_comment_message"
+          },
+          {
+            "name": "review_creation_date"
+          },
+          {
+            "name": "review_answer_timestamp"
+          }
+        ]
+      },
+      {
+        "name": "fact olist_orders_dataset",
+        "columns": [
+          {
+            "name": "order_id"
+          },
+          {
+            "name": "customer_id"
+          },
+          {
+            "name": "order_status"
+          },
+          {
+            "name": "order_purchase_timestamp"
+          },
+          {
+            "name": "order_approved_at"
+          },
+          {
+            "name": "order_delivered_carrier_date"
+          },
+          {
+            "name": "order_delivered_customer_date"
+          },
+          {
+            "name": "order_estimated_delivery_date"
+          },
+          {
+            "name": "YearMonth"
+          },
+          {
+            "name": "Day"
+          },
+          {
+            "name": "Quarter"
+          },
+          {
+            "name": "Shippment Duration"
+          },
+          {
+            "name": "Total Freight"
+          },
+          {
+            "name": "Total Price"
+          },
+          {
+            "name": "Year"
+          },
+          {
+            "name": "Month"
+          }
+        ],
+        "measures": [
+          {
+            "name": "Average Delivery Time"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "YearMonthH",
+            "levels": [
+              {
+                "name": "YearMonth"
+              },
+              {
+                "name": "Year"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "Month"
+              },
+              {
+                "name": "Day"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "olist_order_payments_dataset",
+        "columns": [
+          {
+            "name": "order_id"
+          },
+          {
+            "name": "payment_sequential"
+          },
+          {
+            "name": "payment_type"
+          },
+          {
+            "name": "payment_installments"
+          },
+          {
+            "name": "payment_value"
+          }
+        ],
+        "measures": [
+          {
+            "name": "Average Installments"
+          },
+          {
+            "name": "Avg Duration"
+          },
+          {
+            "name": "Avg Freight Value"
+          },
+          {
+            "name": "Categories' Sales Rank"
+          },
+          {
+            "name": "TotalSales"
+          },
+          {
+            "name": "Category Revenue Percentage"
+          },
+          {
+            "name": "Total Revenue"
+          },
+          {
+            "name": "City Average Duration"
+          },
+          {
+            "name": "City Satisfaction"
+          },
+          {
+            "name": "City Satisfaction Rank"
+          },
+          {
+            "name": "Customers' Density"
+          },
+          {
+            "name": "Customer Percentage"
+          },
+          {
+            "name": "Total Customers"
+          },
+          {
+            "name": "Payment Frequency"
+          },
+          {
+            "name": "Payment Type Count"
+          },
+          {
+            "name": "Preferred Payment Method"
+          },
+          {
+            "name": "Product Frequency"
+          },
+          {
+            "name": "Product Rank"
+          },
+          {
+            "name": "Products Satisfaction"
+          },
+          {
+            "name": "Satisfaction Rank"
+          },
+          {
+            "name": "Sellers' Distribution"
+          },
+          {
+            "name": "States' Installments Rank"
+          },
+          {
+            "name": "States' Sales Rank"
+          },
+          {
+            "name": "TotalOutDate"
+          }
+        ]
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "Sales"
+      },
+      {
+        "name": "Products"
+      },
+      {
+        "name": "Customers"
+      }
+    ],
+    "roles": [
+      {
+        "name": "SP state Data"
+      },
+      {
+        "name": "Product Category"
+      }
+    ]
+  }
+},
+  "cultures": [
+    {
+  "name": "en-TZ",
+  "translations": {
+    "model": {
+      "name": "Model",
+      "translatedCaption": "",
+      "translatedDescription": "",
+      "tables": [
+        {
+          "name": "dim list-states-brazil-38j",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "Sr_No",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "State",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Abbreviation",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Capital",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Area_sq_km",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Population_2010",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Density_2010",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "GDP_total_2008",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "GDP_per_capita_R_2008",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Literacy_2008",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "dim olist_customers_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "customer_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "customer_unique_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "customer_zip_code_prefix",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "customer_city",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "customer_state",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "dim olist_geolocation_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "geolocation_zip_code_prefix",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "geolocation_lat",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "geolocation_lng",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "geolocation_city",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "geolocation_state",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ],
+          "measures": [
+            {
+              "name": "Population Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "dim olist_products_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "product_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_category_name",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_name_lenght",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_description_lenght",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_photos_qty",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_weight_g",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_length_cm",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_height_cm",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_width_cm",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "dim olist_sellers_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "seller_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "seller_zip_code_prefix",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "seller_city",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "seller_state",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "dim product_category_name_translation",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "product_category_name",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_category_name_english",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "fact olist_order_items_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "order_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_item_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "product_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "seller_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "shipping_limit_date",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "price",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "freight_value",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Out Date",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "fact olist_order_reviews_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "review_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "review_score",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "review_comment_title",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "review_comment_message",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "review_creation_date",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "review_answer_timestamp",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        },
+        {
+          "name": "fact olist_orders_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "order_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "customer_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_status",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_purchase_timestamp",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_approved_at",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_delivered_carrier_date",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_delivered_customer_date",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "order_estimated_delivery_date",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "YearMonth",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Day",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Quarter",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Shippment Duration",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Total Freight",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Total Price",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Year",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Month",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ],
+          "measures": [
+            {
+              "name": "Average Delivery Time",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ],
+          "hierarchies": [
+            {
+              "name": "YearMonthH",
+              "translatedCaption": "",
+              "translatedDescription": "",
+              "levels": [
+                {
+                  "name": "YearMonth",
+                  "translatedCaption": "",
+                  "translatedDescription": ""
+                },
+                {
+                  "name": "Year",
+                  "translatedCaption": "",
+                  "translatedDescription": ""
+                },
+                {
+                  "name": "Quarter",
+                  "translatedCaption": "",
+                  "translatedDescription": ""
+                },
+                {
+                  "name": "Month",
+                  "translatedCaption": "",
+                  "translatedDescription": ""
+                },
+                {
+                  "name": "Day",
+                  "translatedCaption": "",
+                  "translatedDescription": ""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "olist_order_payments_dataset",
+          "translatedCaption": "",
+          "translatedDescription": "",
+          "columns": [
+            {
+              "name": "order_id",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "payment_sequential",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "payment_type",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "payment_installments",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "payment_value",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ],
+          "measures": [
+            {
+              "name": "Average Installments",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Avg Duration",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Avg Freight Value",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Categories' Sales Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "TotalSales",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Category Revenue Percentage",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Total Revenue",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "City Average Duration",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "City Satisfaction",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "City Satisfaction Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Customers' Density",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Customer Percentage",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Total Customers",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Payment Frequency",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Payment Type Count",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Preferred Payment Method",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Product Frequency",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Product Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Products Satisfaction",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Satisfaction Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "Sellers' Distribution",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "States' Installments Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "States' Sales Rank",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            },
+            {
+              "name": "TotalOutDate",
+              "translatedCaption": "",
+              "translatedDescription": ""
+            }
+          ]
+        }
+      ],
+      "perspectives": [
+        {
+          "name": "Sales",
+          "translatedCaption": "",
+          "translatedDescription": ""
+        },
+        {
+          "name": "Products",
+          "translatedCaption": "",
+          "translatedDescription": ""
+        },
+        {
+          "name": "Customers",
+          "translatedCaption": "",
+          "translatedDescription": ""
+        }
+      ]
+    }
+  }
+}
+  ]
+}

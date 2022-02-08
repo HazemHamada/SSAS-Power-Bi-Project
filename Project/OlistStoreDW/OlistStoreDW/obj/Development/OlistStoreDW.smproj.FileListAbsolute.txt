@@ -1,0 +1,14 @@
+D:\Engineering\Online Courses\Other\Ejada Training Projects\OlistStoreDW\OlistStoreDW\bin\Model.asdatabase
+D:\Engineering\Online Courses\Other\Ejada Training Projects\OlistStoreDW\OlistStoreDW\bin\Model.deploymenttargets
+D:\Engineering\Online Courses\Other\Ejada Training Projects\OlistStoreDW\OlistStoreDW\bin\Model.deploymentoptions
+D:\Engineering\Online Courses\Other\Ejada Training Projects\OlistStoreDW\OlistStoreDW\obj\Development\OlistStoreDW.smproj.CoreCompileInputs.cache
+D:\Engineering\Online Courses\Other\Ejada Training Projects\OlistStoreDW\OlistStoreDW\obj\Development\Model.asdatabase
+D:\Engineering\Online Courses\Other\Ejada Training Projects\OlistStoreDW\OlistStoreDW\obj\Development\Model.deploymentoptions
+D:\Engineering\Online Courses\Other\Ejada Training Projects\OlistStoreDW\OlistStoreDW\obj\Development\Model.deploymenttargets
+C:\Users\ymahmed\source\repos\OlistStoreDW\OlistStoreDW\bin\Model.asdatabase
+C:\Users\ymahmed\source\repos\OlistStoreDW\OlistStoreDW\bin\Model.deploymenttargets
+C:\Users\ymahmed\source\repos\OlistStoreDW\OlistStoreDW\bin\Model.deploymentoptions
+C:\Users\ymahmed\source\repos\OlistStoreDW\OlistStoreDW\obj\Development\OlistStoreDW.smproj.CoreCompileInputs.cache
+C:\Users\ymahmed\source\repos\OlistStoreDW\OlistStoreDW\obj\Development\Model.asdatabase
+C:\Users\ymahmed\source\repos\OlistStoreDW\OlistStoreDW\obj\Development\Model.deploymentoptions
+C:\Users\ymahmed\source\repos\OlistStoreDW\OlistStoreDW\obj\Development\Model.deploymenttargets
